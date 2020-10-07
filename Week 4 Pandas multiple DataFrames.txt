@@ -1,0 +1,105 @@
+############# merge ###############
+sales_vs_targets = pd.merge(sales, targets)
+print(sales_vs_targets)
+
+crushing_it = sales_vs_targets[sales_vs_targets.revenue > sales_vs_targets.target]
+
+all_data = sales.merge(targets).merge(men_women)
+print(all_data)
+
+results = all_data[(all_data.revenue > all_data.target) & (all_data.women > all_data.men)]
+
+orders_products = pd.merge(orders, products.rename(columns = {'id': 'product_id'}))
+
+orders_products = pd.merge(
+  orders,
+  products,
+  left_on = 'product_id',
+  right_on = 'id',
+  suffixes = ['_orders', '_products']
+)
+
+###### outer join, left join, right join ############
+
+store_a_b_outer = pd.merge(store_a, store_b, how='outer')
+
+#where items found in a but not in b
+store_a_b_left = pd.merge(store_a, store_b, how='left')
+
+#where items found in b but not in a
+store_b_a_left = pd.merge(store_a, store_b, how='right')
+
+menu = pd.concat([bakery, ice_cream])
+
+######### review ##################
+
+visits = pd.read_csv('visits.csv',
+                        parse_dates=[1])
+checkouts = pd.read_csv('checkouts.csv',
+                        parse_dates=[1])
+
+print(visits)
+print(checkouts)
+
+v_to_c = pd.merge(visits, checkouts)
+
+v_to_c['time'] = v_to_c.checkout_time - \
+                 v_to_c.visit_time
+
+print(v_to_c)
+
+print(v_to_c.time.mean())
+
+############# project ###############
+
+import codecademylib
+import pandas as pd
+
+visits = pd.read_csv('visits.csv',
+                     parse_dates=[1])
+cart = pd.read_csv('cart.csv',
+                   parse_dates=[1])
+checkout = pd.read_csv('checkout.csv',
+                       parse_dates=[1])
+purchase = pd.read_csv('purchase.csv',
+                       parse_dates=[1])
+
+print(visits.head())          
+print(cart.head())  
+print(checkout.head())  
+print(purchase.head())  
+
+merged_visits_cart = pd.merge(visits, cart, how='left')
+print(len(merged_visits_cart))
+
+cart_time_null = merged_visits_cart[merged_visits_cart.cart_time.isnull()]
+print(len(cart_time_null))
+
+percentage_cart_null =float(len(cart_time_null)) / len(merged_visits_cart)  
+print(percentage_cart_null)
+
+merged_cart_checkout = pd.merge(cart, checkout, how='left')
+print(merged_cart_checkout)
+print(len(merged_cart_checkout))
+
+checkout_null = merged_cart_checkout[merged_cart_checkout.checkout_time.isnull()]
+print(len(checkout_null))
+
+percentage_checkout_null = float(len(checkout_null)) / len(merged_cart_checkout) 
+print(percentage_checkout_null)
+
+all_data = visits.merge(cart, how='left').merge(checkout, how='left').merge(purchase, how='left')
+print(all_data.head())
+
+merge_checkout_purchase = pd.merge(checkout, purchase, how ='left')
+merge_purchase_null = merge_checkout_purchase[merge_checkout_purchase.purchase_time.isnull()]
+percentage_purchase_null = len(merge_purchase_null) / float(len(merge_checkout_purchase))
+print(percentage_purchase_null)
+
+all_data['time_to_purchase'] = \
+    all_data.purchase_time - \
+    all_data.visit_time
+
+print(all_data.time_to_purchase)
+
+print(all_data.time_to_purchase.mean())

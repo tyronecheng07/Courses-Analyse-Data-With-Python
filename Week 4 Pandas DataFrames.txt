@@ -1,0 +1,69 @@
+##### Add a Column #############
+df['Sold in Bulk?'] = ['Yes', 'Yes', 'No', 'No']
+
+df['Is taxed?'] = 'Yes'
+df['Margin'] = df.Price - df['Cost to Manufacture']
+df['Lowercase Name'] = df.Name.apply(lower)
+
+########### lambda ############
+
+mylambda = lambda x: x[0] +x[-1]
+mylambda = lambda age: 'Welcome to BattleCity!' if age >= 13 else 'You must be over 13'
+
+get_last_name = lambda name: name.split()[-1]
+df['last_name'] = df.name.apply(get_last_name)
+
+########### add a column with lambda #############
+
+total_earned = lambda row: row['hours_worked'] * row['hourly_wage'] if row['hours_worked'] <= 40 else (40 * row['hourly_wage']) + (row['hours_worked'] - 40) * (row['hourly_wage'] * 1.50)
+
+df['total_earned'] = df.apply(total_earned, axis=1)
+
+df.columns = ['ID', 'Title', 'Category', 'Year Released', 'Rating']
+
+############### rename column ###############
+
+df.rename(columns={
+  'name': 'movie_title'
+}, inplace=True)
+
+############# review ############
+orders = pd.read_csv('shoefly.csv')
+print(orders.head())
+
+shoe_source= lambda x: 'vegan' if x != 'leather' else 'animal'
+
+orders['shoe_source'] = orders.shoe_material.apply(shoe_source)
+
+email = lambda row: 'Dear Mr. {}'.format(row.last_name) if row.gender == 'male' else 'Dear Ms. {}'.format(row.last_name) 
+
+orders['salutation'] = orders.apply(email, axis=1)
+
+########### last project ############
+
+import codecademylib
+import pandas as pd
+
+inventory = pd.read_csv('inventory.csv')
+print(inventory.head(10))
+
+staten_island = inventory.head(10)
+
+product_request= inventory['product_description'].head(10)
+
+print(product_request)
+
+seed_request = inventory[(inventory['location'] == 'Brooklyn') & (inventory['product_type'] == 'seeds')]
+
+print(seed_request)
+
+mylambda = lambda x: True if x > 0 else False
+inventory['in_stock'] = inventory.quantity.apply(mylambda)
+
+inventory['total_value'] = inventory.price * inventory.quantity
+
+combine_lambda = lambda row: \
+    '{} - {}'.format(row.product_type,
+                     row.product_description)
+
+inventory['full_description'] = inventory.apply(combine_lambda, axis=1)
