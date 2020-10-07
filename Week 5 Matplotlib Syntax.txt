@@ -1,0 +1,145 @@
+########## plot ##############
+
+from matplotlib import pyplot as plt
+
+days = [0, 1, 2, 3, 4, 5, 6]
+money_spent = [10, 12, 12, 10, 14, 22, 24]
+
+plt.plot(days, money_spent)
+plt.show()
+
+***
+
+plt.plot(time, revenue)
+plt.plot(time, costs)
+plt.show()
+
+** By default, the first line is always blue, and the second line is always orange. **
+
+####### linestyle ###############
+
+color can be chosen at html color
+
+plt.plot(time, revenue, color='purple', linestyle='--')
+plt.plot(time, costs, color='#82edc9', marker='s')
+
+############## axis #############
+
+x = range(12)
+y = [3000, 3005, 3010, 2900, 2950, 3050, 3000, 3100, 2980, 2980, 2920, 3010]
+plt.plot(x, y)
+
+#your code here
+plt.axis([0, 12, 2900, 3100])
+plt.show()
+
+######### labelling the axes ###############
+
+plt.xlabel('Time')
+plt.ylabel('Dollars spent on coffee')
+plt.title('My Last Twelve Years of Coffee Drinking')
+
+******
+import codecademylib
+from matplotlib import pyplot as plt
+
+months = range(12)
+temperature = [36, 36, 39, 52, 61, 72, 77, 75, 68, 57, 48, 48]
+flights_to_hawaii = [1200, 1300, 1100, 1450, 850, 750, 400, 450, 400, 860, 990, 1000]
+
+# plt.subplot(x, y, z) x= row, y= column, z= index
+plt.subplot(1, 2, 1)
+plt.plot(months, temperature)
+plt.show()
+
+****************
+
+plt.subplot(1, 2, 2)
+plt.plot(temperature, flights_to_hawaii, 'o')
+plt.show()
+
+plt.subplot(2, 1, 1)
+plt.plot(x, straight_line)
+
+plt.subplot(2, 2, 3)
+plt.plot(x, parabola)
+
+plt.subplot(2, 2, 4)
+plt.plot(x, cubic)
+
+plt.subplots_adjust(wspace=0.35, bottom=0.2)
+
+wspace = horizontal space
+hspace = vertical space
+
+########## legend ###########
+
+legend_labels = ["Hyrule", "Kakariko", "Gerudo Valley"]
+plt.legend(legend_labels, loc=8)
+
+######### change labels #############
+
+ax = plt.subplot()
+ax.set_xticks(months) #months is a list
+ax.set_xticklabels(month_names) #month_names is a list
+ax.set_yticks([0.10, 0.25, 0.5, 0.75])
+ax.set_yticklabels(['10%', '25%', '50%', '75%'])
+
+####### figure ############
+
+#close all previous leftover graph
+plt.close('all')
+
+plt.plot(years, word_length)
+
+#save the file, in png, pdf or svg
+plt.savefig('winning_word_lengths.png')
+
+#figsize=(width, height)
+plt.figure(figsize=(7, 3))
+plt.plot(years, power_generated)
+plt.savefig('power_generated.png')
+
+############ project ############
+
+import codecademylib
+from matplotlib import pyplot as plt
+
+months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+visits_per_month = [9695, 7909, 10831, 12942, 12495, 16794, 14161, 12762, 12777, 12439, 10309, 8724]
+
+# numbers of limes of different species sold each month
+key_limes_per_month = [92.0, 109.0, 124.0, 70.0, 101.0, 79.0, 106.0, 101.0, 103.0, 90.0, 102.0, 106.0]
+persian_limes_per_month = [67.0, 51.0, 57.0, 54.0, 83.0, 90.0, 52.0, 63.0, 51.0, 44.0, 64.0, 78.0]
+blood_limes_per_month = [75.0, 75.0, 76.0, 71.0, 74.0, 77.0, 69.0, 80.0, 63.0, 69.0, 73.0, 82.0]
+
+
+# create your figure here
+plt.figure(figsize=(12, 8))
+ax = plt.subplot()
+
+ax1 = plt.subplot(1, 2, 1)
+x_values = range(len(months))
+
+plt.plot(x_values, visits_per_month, linestyle='--')
+plt.xlabel('months')
+plt.ylabel('visits per month')
+
+ax.set_xticks(x_values)
+ax.set_xticklabels(months)
+plt.title('pages visit over time')
+plt.subplots_adjust(wspace=0.35, bottom=0.2)
+
+ax2 = plt.subplot(1, 2, 2)
+plt.plot(x_values, key_limes_per_month, color='pink')
+plt.plot(x_values, persian_limes_per_month, color='purple')
+plt.plot(x_values, blood_limes_per_month, color='gray')
+plt.legend(['key limes', 'persian limes', 'blood limes'])
+ax.set_xticks(x_values)
+ax.set_xticklabels(months)
+plt.title('lime Sales per month')
+plt.subplots_adjust(wspace=0.35, bottom=0.2)
+
+plt.show()
+plt.savefig('sublime_limes.png')

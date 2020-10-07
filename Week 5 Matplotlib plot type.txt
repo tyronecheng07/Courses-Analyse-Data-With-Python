@@ -1,0 +1,120 @@
+############ bars ##############
+
+drinks = ["cappuccino", "latte", "chai", "americano", "mocha", "espresso"]
+sales =  [91, 76, 56, 66, 52, 27]
+
+plt.bar(range(len(drinks)), sales)
+
+ax = plt.subplot()
+ax.set_xticks(range(6))
+ax.set_xticklabels(drinks)
+plt.show()
+
+######## side-by-side bars  ###########
+
+drinks = ["cappuccino", "latte", "chai", "americano", "mocha", "espresso"]
+sales1 =  [91, 76, 56, 66, 52, 27]
+sales2 = [65, 82, 36, 68, 38, 40]
+
+#Paste the x_values code here
+
+n = 1  # This is our first dataset (out of 2)
+t = 2 # Number of datasets
+d = 6 # Number of sets of bars
+w = 0.8 # Width of each bar
+store1_x = [t*element + w*n for element
+             in range(d)]
+
+plt.bar(store1_x, sales1)
+
+n = 2  # This is our second dataset (out of 2)
+t = 2 # Number of datasets
+d = 6 # Number of sets of bars
+w = 0.8 # Width of each bar
+store2_x = [t*element + w*n for element
+             in range(d)]
+
+plt.bar(store2_x, sales2)
+
+############ stack to stack bar ###############
+
+drinks = ["cappuccino", "latte", "chai", "americano", "mocha", "espresso"]
+sales1 =  [91, 76, 56, 66, 52, 27]
+sales2 = [65, 82, 36, 68, 38, 40]
+plt.bar(range(len(sales1)), sales1)
+plt.bar(range(len(sales2)), sales2, bottom=sales1)
+plt.legend(['Location 1', 'Location 2'])
+
+############ Error Bars #############
+
+drinks = ["cappuccino", "latte", "chai", "americano", "mocha", "espresso"]
+ounces_of_milk = [6, 9, 4, 0, 9, 0]
+error = [0.6, 0.9, 0.4, 0, 0.9, 0]
+
+# Plot the bar graph here
+plt.bar(range(len(ounces_of_milk)), ounces_of_milk, yerr=error, capsize=5)
+
+############# Fill Between ---shaded error (like a shade for the curve)##############
+
+months = range(12)
+month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+revenue = [16000, 14000, 17500, 19500, 21500, 21500, 22000, 23000, 20000, 19500, 18000, 16500]
+
+#your work here
+plt.plot(months, revenue)
+ax = plt.subplot()
+ax.set_xticks(months)
+ax.set_xticklabels(month_names)
+
+y_lower = [i - 0.1 * i for i in revenue]
+y_upper = [i+ 0.1 * i for i in revenue]
+
+plt.fill_between(months, y_lower, y_upper, alpha=0.2)
+
+######## pie ##################
+
+payment_method_freqs = [270, 77, 32, 11]
+
+#make your pie chart here
+plt.pie(payment_method_freqs)
+plt.axis('equal')
+
+********** inserting legend in pie chart ************
+## method 1 
+budget_data = [500, 1000, 750, 300, 100]
+budget_categories = ['marketing', 'payroll', 'engineering', 'design', 'misc']
+
+plt.pie(budget_data)
+plt.legend(budget_categories)
+
+## method 2 (direct inside the pie)
+plt.pie(budget_data, labels=budget_categories)
+
+****** auto formatting *******
+plt.pie(budget_data,
+        labels=budget_categories,
+        autopct='%0.1f%%')
+
+look for more details in searching string formation in google
+
+****** example *****
+
+plt.pie(payment_method_freqs, autopct='%0.1f%%')
+plt.axis('equal')
+plt.legend(payment_method_names)
+
+########## histogram ###########
+
+plt.hist(sales_times, bins=20)
+
+########### multiple histogram #############
+
+****** to encounter the problem of overlapping and to make both histograms visible
+1) use the keyword alpha, which can be a value between 0 and 1. This sets the transparency of the histogram.
+2) use the keyword histtype with the argument 'step' to draw just the outline of a histogram
+****** or too widespread ******
+3)To solve this, we can normalize our histograms using normed=True
+
+plt.hist(sales_times1, bins=20, alpha=0.4, normed=True)
+#plot your other histogram here
+plt.hist(sales_times2, bins=20, alpha= 0.4, normed=True)
