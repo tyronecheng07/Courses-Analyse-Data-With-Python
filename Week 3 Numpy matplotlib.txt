@@ -1,0 +1,154 @@
+import codecademylib
+import numpy as np
+# Write matplotlib import here:
+from matplotlib import pyplot as plt
+
+commutes = np.genfromtxt('commutes.csv', delimiter=',')
+
+# Plot histogram here:
+plt.hist(commutes, bins=6, range=(20,51))
+
+plt.show()
+
+#bins = number of columns
+#range = range of x values
+
+############ type of distribution #############
+
+A unimodal dataset has only one distinct peak. 
+Bimodal = 2 peaks == 2 populations
+Multimodal = more than 2 peaks
+uniform = distributed evenly
+
+***** for unimodal ******
+
+# A symmetric dataset has equal amounts of data on both sides of the peak. 
+  # symmetric dataset => mean and median are at the same position
+
+# A skew-right dataset has a long tail on the right of the peak, but most of the data is on the left. right => tail at right
+  # skew-right dataset => median shifts to the left, mean more centered
+
+# A skew-left dataset has a long tail on the left of the peak, but most of the data is on the right. left => tail at left
+  # skew-left dataset => median shifts to the right, mean more centered
+
+############### normal distribution ##################
+
+Normal distributions are defined by their mean and standard deviation. 
+The mean sets the “middle” of the distribution, and the standard deviation sets the “width” of the distribution.
+
+# Brachiosaurus
+b_data = np.random.normal(6.7, 0.7, size=1000)
+# Fictionosaurus
+f_data = np.random.normal(7.7, 0.3, size=1000)
+
+plt.hist(b_data,
+         bins=30, range=(5, 8.5), histtype='step',
+         label='Brachiosaurus')
+plt.hist(f_data,
+         bins=30, range=(5, 8.5), histtype='step',
+         label='Fictionosaurus')
+plt.xlabel('Femur Length (ft)')
+plt.legend(loc=2)
+plt.show()
+
+mystery_dino = 'Brachiosaurus'
+answer = False
+
+################# Standard Deviations and Normal Distribution ##############
+
+In fact, here are a few more helpful rules for normal distributions:
+
+    68% of our samples will fall between +/- 1 standard deviation of the mean
+    95% of our samples will fall between +/- 2 standard deviations of the mean
+    99.7% of our samples will fall between +/- 3 standard deviations of the mean
+
+***** 1 standard deviation of the mean
+one_above = 1000 + 100
+one_below = 1000 - 100
+
+one_std = 2000 * 0.68
+
+########## Binomial Distribution ##################
+
+The binomial distribution tells us how likely it is for a certain number of “successes” to happen, 
+given a probability of success and a number of trials.
+
+ In this example:
+
+    The probability of success was 30% (he makes 30% of free throws)
+    The number of trials was 10 (he took 10 shots)
+    The number of successes was 4 (he made 4 shots)
+
+emails = np.random.binomial(500, 0.05, size=10000)
+
+plt.hist(emails)
+plt.show()
+
+############### Binomial Distributions and Probability ###################
+
+emails = np.random.binomial(500, 0.05, size=10000)
+no_emails = np.mean(emails == 475)
+b_test_emails = np.mean(emails > 40)
+
+**************
+import codecademylib
+import numpy as np
+from matplotlib import pyplot as plt
+
+sunflowers = np.genfromtxt('sunflower_heights.csv',
+                           delimiter=',')
+
+# Calculate mean and std of sunflowers here:
+sunflowers_mean = np.mean(sunflowers)
+sunflowers_std = np.std(sunflowers)
+
+
+# Calculate sunflowers_normal here:
+sunflowers_normal = np.random.normal(sunflowers_mean, sunflowers_std, size=5000)
+
+plt.hist(sunflowers,
+         range=(11, 15), histtype='step', linewidth=2,
+        label='observed', normed=True)
+plt.hist(sunflowers_normal,
+         range=(11, 15), histtype='step', linewidth=2,
+        label='normal', normed=True)
+plt.legend()
+plt.show()
+
+# Calculate probabilities here:
+experiments = np.random.binomial(200, 0.1, size=5000)
+prob = np.mean(experiments < 20)
+
+****************
+import codecademylib
+import numpy as np
+from matplotlib import pyplot as plt
+
+survey_responses = ['Ceballos', 'Kerrigan', 'Ceballos', 'Ceballos', 'Ceballos','Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Ceballos', 
+'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Ceballos', 'Ceballos', 'Ceballos', 'Ceballos',
+'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Ceballos',
+'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Ceballos', 'Ceballos', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Kerrigan', 'Ceballos']
+
+
+total_ceballos = sum([1 for a in survey_responses if a == 'Ceballos'])
+print(total_ceballos)
+survey_length = float(len(survey_responses))
+percentage_ceballos = total_ceballos / survey_length * 100
+print(percentage_ceballos)
+
+possible_surveys = np.random.binomial(survey_length, 0.54, size=10000) / survey_length
+
+plt.hist(possible_surveys, bins=20, range=(0,1))
+plt.show()
+
+possible_survey_length = float(len(possible_surveys))
+incorect_predictions = len(possible_surveys[possible_surveys < 0.5])
+ceballos_loss_surveys = incorect_predictions / possible_survey_length
+print(ceballos_loss_surveys)
+
+large_survey_length = float(7000)
+large_survey = np.random.binomial(large_survey_length, 0.54, size=10000) / large_survey_length
+
+incorect_predictions =  len(large_survey[large_survey < 0.5])
+ceballos_loss_new = incorect_predictions / large_survey_length
+print(ceballos_loss_new)

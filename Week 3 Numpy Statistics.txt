@@ -1,0 +1,148 @@
+The statistical concepts that we’ll cover include:
+
+    Mean   = total / num
+    Median = middle number or middle numbers add up then / 2
+    Percentiles
+    Interquartile Range
+    Outliers
+    Standard Deviation
+
+################## mean ################
+
+import numpy as np
+
+store_one = np.array([2, 5, 8, 3, 4, 10, 15, 5])
+store_two = np.array([3, 17, 18,  9,  2, 14, 10])
+store_three = np.array([7, 5, 4, 3, 2, 7, 7])
+
+store_one_avg = np.mean(store_one)
+store_two_avg = np.mean(store_two)
+store_three_avg = np.mean(store_three)
+
+print(store_one_avg)
+print(store_two_avg)
+print(store_three_avg)
+
+best_seller = store_two
+
+>>> np.mean(survey_array > 8)
+0.2
+
+The resulting output tells us that 20% of responders purchased more than 8 pounds of produce. 
+
+millennials = np.mean(class_year > 2005)
+
+np.mean(ring_toss, axis=1) ####### axis = 0 (column) axis = 1 (row)
+
+############### mean ############
+
+import numpy as np
+
+allergy_trials = np.array([[6, 1, 3, 8, 2], 
+                           [2, 6, 3, 9, 8], 
+                           [5, 2, 6, 9, 9]])
+
+total_mean = np.mean(allergy_trials)
+
+trial_mean = np.mean(allergy_trials, axis=1)
+
+patient_mean = np.mean(allergy_trials, axis=0)
+
+print(total_mean)
+print(trial_mean)
+print(patient_mean)
+
+############### outlier ###############
+
+Values that don’t fit within the majority of a dataset are known as outliers. It’s important to identify outliers because if they go unnoticed, they can skew our data and lead to error in our analysis (like determining the mean). They can also be useful in pointing out errors in our data collection. 
+
+sort the data to identify outlier
+sorted_temps = np.sort(temps)
+
+########### median ###############
+
+large_set_median = np.median(large_set)
+
+########## mean vs median #################
+
+import numpy as np
+
+time_spent = np.genfromtxt('file.csv', delimiter=',')
+
+print(time_spent)
+
+minutes_mean = np.mean(time_spent)
+
+minutes_median = np.median(time_spent)
+
+print(minutes_mean)
+print(minutes_median)
+
+best_measure = minutes_median
+
+########### percentile ############
+
+d = [1, 2, 3, 4, 4, 4, 6, 6, 7, 8, 8]
+
+There are 11 numbers in the dataset. The 40th percentile will have 40% of the 10 remaining numbers below it (40% of 10 is 4) and 60% of the numbers above it (60% of 10 is 6). So in this example, the 40th percentile is 4.
+
+thirtieth_percentile = np.percentile(patrons, 30)
+
+seventieth_percentile = np.percentile(patrons, 70)
+
+************ Some percentiles have specific names: **************
+
+    The 25th percentile is called the first quartile
+    The 50th percentile is called the median
+    The 75th percentile is called the third quartile
+
+ to find the interquartile range => 75th - 25th
+The smaller the interquartile range value, the less variance in our dataset. 
+The greater the value, the larger the variance. 
+
+first_quarter = np.percentile(movies_watched, 25)
+third_quarter = np.percentile(movies_watched, 75) 
+interquartile_range = third_quarter - first_quarter
+
+########## percentile:interpolation ###########
+
+If you ask for a percentile that falls between two points, you can set the interpolation parameter to either 'lower', 'higher' to get one point or another. 
+For example, if your list was patrons = [5, 8, 10, 12], 
+then np.percentile(patrons, 10, interpolation = 'lower') would give you 5. 
+If you set interpolation = 'higher', you would get 8.
+
+######## standard deviation ##############
+
+The larger the standard deviation, the more spread out our data is from the center. => spread out
+The smaller the standard deviation, the more the data is clustered around the mean. => more to the center
+
+pumpkin_std = np.std(pumpkin)
+acorn_squash_std = np.std(acorn_squash)
+
+###### review ##############
+
+rainfall = np.array([5.21, 3.76, 3.27, 2.35, 1.89, 1.55, 0.65, 1.06, 1.72, 3.35, 4.82, 5.11])
+
+rain_mean = np.mean(rainfall)
+rain_median = np.median(rainfall)
+
+first_quarter = np.percentile(rainfall, 25)
+third_quarter = np.percentile(rainfall, 75)
+interquartile_range = third_quarter - first_quarter
+rain_std = np.std(rainfall)
+
+############ project: CrunchieMunchies ##########
+
+let’s calculate the percentage of cereals that have more than 60 calories per serving. 
+more_calories = np.mean(calorie_stats > 60)
+
+calorie_stats = np.genfromtxt('cereal.csv', delimiter=',')
+average_calories = np.mean(calorie_stats)
+calorie_stats_sorted = np.sort(calorie_stats)
+
+median_calories = np.median(calorie_stats)
+nth_percentile = np.percentile(calorie_stats, 4)
+more_calories = np.mean(calorie_stats > 60)
+calorie_std = np.std(calorie_stats)
+
+#ca. 96% of the servings from the competitors are more than 60 calories.
