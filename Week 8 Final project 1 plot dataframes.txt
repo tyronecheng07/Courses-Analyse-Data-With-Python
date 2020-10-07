@@ -1,0 +1,95 @@
+###### project foodwheel ###########
+
+from matplotlib import pyplot as plt
+import pandas as pd
+
+restaurants = pd.read_csv('restaurants.csv')
+print(restaurants.head())
+cuisine_options_count = restaurants.cuisine.nunique()
+print(cuisine_options_count)
+
+cuisine_counts = restaurants.groupby('cuisine').id.count().reset_index()
+
+######## part 2 ###############
+
+import codecademylib3
+from matplotlib import pyplot as plt
+import pandas as pd
+
+restaurants = pd.read_csv('restaurants.csv')
+
+cuisine_counts = restaurants.groupby('cuisine')\
+                            .name.count()\
+                            .reset_index()
+
+#return list but not columns
+cuisines = cuisine_counts['cuisine'].values
+counts = cuisine_counts['name'].values
+
+plt.pie(counts, labels=cuisines, autopct='%d%%')
+plt.axis('equal')
+plt.title('Cuisines offered by FoodWheel')
+plt.show()
+
+############# part 3 #################
+
+import codecademylib
+from matplotlib import pyplot as plt
+import pandas as pd
+
+
+orders = pd.read_csv('orders.csv')
+print(orders.head())
+
+months = lambda x: x.date.split('-')[0]
+orders['month'] = orders.apply(months, axis=1)
+
+avg_order = orders.groupby('month').price.mean().reset_index()
+print(avg_order)
+
+std_order = orders.groupby('month').price.std().reset_index()
+
+########### part 4 ##############
+
+import codecademylib
+from matplotlib import pyplot as plt
+import pandas as pd
+months = ['April', 'May', 'June', 'July', 'August', 'September']
+
+orders = pd.read_csv('orders.csv')
+
+orders['month'] = orders.date.apply(lambda x: x.split('-')[0])
+print(orders)
+avg_order = orders.groupby('month').price.mean().reset_index()
+print(avg_order)
+std_order = orders.groupby('month').price.std().reset_index()
+
+ax = plt.subplot()
+bar_heights = avg_order['price']
+bar_errors = std_order['price']
+#create barchart here
+plt.bar(range(len(bar_heights)), bar_heights, capsize=5, yerr=bar_errors)
+ax.set_xticks(range(6))
+ax.set_xticklabels(months)
+plt.xlabel('Month')
+plt.ylabel('Average amount spent')
+plt.title('Average amount spent on an order for each month')
+plt.show()
+
+############# part 5 ###############
+
+import codecademylib
+from matplotlib import pyplot as plt
+import pandas as pd
+
+orders = pd.read_csv('orders.csv')
+
+customer_amount = orders.groupby('customer_id').price.sum().reset_index()
+print(customer_amount.head())
+
+plt.hist(customer_amount.price, range=(0,200), bins=40)
+plt.xlabel('Total Spent')
+plt.ylabel('Number Of Customers')
+plt.title('each customer on FoodWheel spent over the past six months')
+
+plt.show()

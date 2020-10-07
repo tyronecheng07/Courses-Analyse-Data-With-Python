@@ -1,0 +1,102 @@
+Normally: A/B test use chi2 (because of categorical datasets)
+
+For example: yes or not
+ 
+blue or green
+is or not
+########## part 1 #############
+
+import codecademylib
+import pandas as pd
+
+df = pd.read_csv('clicks.csv')
+print(df.head())
+
+########## part 2 #############
+
+import codecademylib
+import pandas as pd
+
+df = pd.read_csv('clicks.csv')
+
+mylambda = lambda x: 'Purchase' if pd.notnull(x) else 'No Purchase'
+df['is_purchase'] = df.click_day.apply(mylambda)
+
+purchase_counts = df.groupby(['group', 'is_purchase']).user_id.count().reset_index()
+print(purchase_counts)
+
+########### part 3 ###############
+
+The data from this A/B test is categorical data.
+
+Why?
+
+Because a user’s response can be either "Purchase" or "No Purchase".
+
+********* codes **************
+
+from scipy.stats import chi2_contingency
+
+contingency = [
+  [316, 1350],
+  [183, 1483],
+  [83, 1583],
+]
+
+chi2, pvalue, dof, expected = chi2_contingency(contingency)
+print(pvalue)
+
+
+if pvalue < 0.05:
+  print(True)
+else:
+  print(False)
+
+############## part 4 ############
+
+import codecademylib
+import pandas as pd
+
+df = pd.read_csv('clicks.csv')
+print(df.head())
+
+num_visits = len(df)
+
+#num of sales = total amount / price per sales
+num_sales_099 = 1000 / 0.99
+p_clicks_099 = num_sales_099 / num_visits
+
+num_sales_199 = 1000 / 1.99
+p_clicks_199 = num_sales_199 / num_visits
+
+num_sales_499 = 1000 / 4.99
+p_clicks_499 = num_sales_499 / num_visits
+
+is_significant = True
+
+########## part 5 #############
+
+import codecademylib
+import pandas as pd
+from scipy.stats import binom_test
+
+df = pd.read_csv('clicks.csv')
+
+num_visits = len(df)
+
+p_clicks_099 = (1000 / 0.99) / num_visits
+p_clicks_199 = (1000 / 1.99) / num_visits
+p_clicks_499 = (1000 / 4.99) / num_visits
+
+#p_clicks_099 => expected percentage of people buying with 0.99
+pvalueA = binom_test(316, n=1666, p=p_clicks_099)
+
+pvalueB = binom_test(183, n=(1483 + 183), p=p_clicks_199)
+
+pvalueC = binom_test(83, n=(1583 + 83), p=p_clicks_499)
+
+
+print(pvalueA)
+print(pvalueB)
+print(pvalueC)
+final_answer = 4.99
