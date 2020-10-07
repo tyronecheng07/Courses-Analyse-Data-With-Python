@@ -1,0 +1,254 @@
+###### 1 sample t-test ##############
+
+ages = np.genfromtxt("ages.csv")
+print(ages)
+
+ages_mean = ages.mean()
+
+tstat, pval = ttest_1samp(ages, 30)
+
+print(pval) #pval is our p-value
+
+*********
+
+from scipy.stats import ttest_1samp
+import numpy as np
+
+correct_results = 0 # Start the counter at 0
+
+daily_visitors = np.genfromtxt("daily_visitors.csv", delimiter=",")
+
+for i in range(1000): # 1000 experiments
+   #your ttest here:
+   tstat, pval = ttest_1samp(daily_visitors[i], 30)
+   #print the pvalue here:
+   print pval
+   if pval < 0.05:
+     correct_results += 1
+
+########## 2 Sample T-Test ###############
+
+The null hypothesis, in this case, is that the two distributions have the same mean.
+
+week1 = np.genfromtxt("week1.csv",  delimiter=",")
+week2 = np.genfromtxt("week2.csv",  delimiter=",")
+
+week1_mean = np.mean(week1)
+week2_mean = np.mean(week2)
+print(week1_mean) = 25.4480593951
+print(week2_mean) = 29.0215681077
+
+week1_std = np.std(week1)
+week2_std = np.std(week2)
+print(week1_std) = 4.53169338708
+print(week2_std) = 5.49796670865
+
+tstat, pval = ttest_ind(week1, week2)
+print(pval) = 0.000676767690007
+
+!!!!!! the difference is minor, p-value small 
+
+########### showing us the error when we want to do t-test more than 2 datasets ##########
+a_b_tstat, a_b_pval = ttest_ind(a, b)
+a_c_tstat, a_c_pval = ttest_ind(a, c)
+b_c_tstat, b_c_pval = ttest_ind(b, c)
+
+print(a_b_pval) = 2.76676293987e-05
+print(a_c_pval) = 0.0210120516986
+print(b_c_pval) = 0.0598856352397
+
+error_prob = 1- 0.95 ** 3 
+print(error_prob) = 0.142625
+
+3 t-test => error becomes 15%
+
+################# ANOVA ##################
+!!! for number mostly
+When comparing more than two numerical datasets, 
+the best way to preserve a Type I error probability of 0.05 is to use ANOVA.
+
+If we reject the null hypothesis with ANOVA, we’re saying that at least one of the sets has a different mean; 
+however, it does not tell us which datasets are different.
+
+from scipy.stats import ttest_ind
+from scipy.stats import f_oneway
+import numpy as np
+
+a = np.genfromtxt("store_a.csv",  delimiter=",")
+b = np.genfromtxt('store_b_new.csv',  delimiter=",")
+c = np.genfromtxt("store_c.csv",  delimiter=",")
+
+fstat, pval = f_oneway(a, b, c) => ANOVA
+print(pval)
+
+############### Assumption of numerical Hypothesis tests ##############
+
+Before we use numerical hypothesis tests, we need to be sure that the following things are true:
+1. The samples should each be normally distributed…ish
+2. The population standard deviations of the groups should be equal
+=> sufficient to divide the two standard deviations and see if the ratio is “close enough” to 1.
+3. The samples must be independent 
+some examples where it would seem the samples are not independent:
+# the number of goals scored per soccer player before, during, and after undergoing a rigorous training regimen
+# a group of patients’ blood pressure levels before, during, and after the administration of a drug
+
+############ Tukey's Range Test ##################
+
+After ANOVA test, if we have significant differences between datasets
+!! then We can perform a Tukey’s Range Test to determine the difference between datasets. (which is different)
+
+******* example for tukey's range test ******
+
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from scipy.stats import f_oneway
+import numpy as np
+
+a = np.genfromtxt("store_a.csv",  delimiter=",")
+b = np.genfromtxt("store_b.csv",  delimiter=",")
+c = np.genfromtxt("store_c.csv",  delimiter=",")
+
+stat, pval = f_oneway(a, b, c)
+print pval
+
+# Using our data from ANOVA, we create v and l
+v = np.concatenate([a, b, c])
+labels = ['a'] * len(a) + ['b'] * len(b) + ['c'] * len(c)
+
+tukey_results = pairwise_tukeyhsd(v, labels, 0.05)
+print(tukey_results)
+
+############# Binomial test for catogorical datasets ###################
+
+Let’s imagine that we are analyzing the percentage of customers who make a purchase after visiting a website. We have a set of 1000 customers from this month, 58 of whom made a purchase. Over the past year, the number of visitors per every 1000 who make a purchase hovers consistently at around 72. Thus, our marketing department has set our target number of purchases per 1000 visits to be 72. We would like to know if this month’s number, 58, is a significant difference from that target or a result of natural fluctuations.
+
+check whether our actual datasets hat significant difference from the target or just a natural fluctuation
+
+To analyze a dataset like this, with two different possibilities for entries, we can use a Binomial Test. A Binomial Test compares a categorical dataset to some expectation. 
+(to compare percent for example)
+
+*********** example *************
+from scipy.stats import binom_test
+
+pval = binom_test(510, n=10000, p=0.06)
+print(pval)
+
+pval2 = binom_test(590, n=10000, p=0.06)
+print(pval2)
+
+############# Chi Square test for two or more categorical datasets##############
+!! for a group and another
+
+Chi Square test. It is useful in situations like:
+
+An A/B test where half of users were shown a green submit button and the other half were shown a purple submit button. 
+Was one group more likely to click the submit button?
+
+******** example **************
+from scipy.stats import chi2_contingency
+
+# Contingency table
+#         harvester |  leaf cutter
+# ----+------------------+------------
+# 1st gr | 30       |  10
+# 2nd gr | 35       |  5
+# 3rd gr | 28       |  12
+
+X = [[30, 10],
+     [35, 5],
+     [28, 12],
+     [20, 20]]
+     
+chi2, pval, dof, expected = chi2_contingency(X)
+print pval
+
+=> if p-value < 0.05, reject null hypothesis
+
+############# project familiar ##############
+
+import familiar
+from scipy.stats import ttest_1samp
+from scipy.stats import ttest_ind
+from scipy.stats import chi2_contingency
+
+vein_pack_lifespans = familiar.lifespans(package='vein')
+
+#test vein pack and l.expectancy 71
+vein_pack_test = ttest_1samp(vein_pack_lifespans, 71)
+tstat, pval = vein_pack_test
+#print(pval)
+if pval < 0.05:
+  print('The Vein Pack Is Proven To Make You Live Longer!')
+else:
+  print('The Vein Pack Is Probably Good For You Somehow!')
+
+artery_pack_lifespans = familiar.lifespans(package='artery')
+
+#test vein pack and artery pack
+package_comparison_results = ttest_ind(vein_pack_lifespans, artery_pack_lifespans)
+tstat, pval = package_comparison_results
+if pval < 0.05:
+  print('the Artery Package guarantees even stronger results!')
+else:
+  print('the Artery Package is also a great product!')
+
+iron_contingency_table = familiar.iron_counts_for_package()
+
+#test artery package survey with counts 'high', 'normal', 'low'
+chi2, iron_pvalue, dof, expected = chi2_contingency(iron_contingency_table)
+
+if iron_pvalue < 0.05:
+  print('The Artery Package Is Proven To Make You Healthier!')
+else:
+  print("While We Can't Say The Artery Package Will Help You, I Bet It's Nice!")
+
+############# fetchmaker project ####################
+
+import numpy as np
+import fetchmaker
+from scipy.stats import binom_test
+from scipy.stats import f_oneway
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from scipy.stats import chi2_contingency
+
+rottweiler_tl = fetchmaker.get_tail_length("rottweiler")
+print(rottweiler_tl)
+rottweiler_tl_std = np.std(rottweiler_tl)
+rottweiler_tl_mean = np.mean(rottweiler_tl)
+
+whippet_rescue = fetchmaker.get_is_rescue("whippet")
+num_whippet_rescues = np.count_nonzero(whippet_rescue)
+num_whippets = np.size(whippet_rescue)
+
+#test our samples with expected percentage (3 numerical datasets => 3 DataFrame)
+pval = binom_test(num_whippet_rescues, n=num_whippets, p=0.08)
+print(pval)
+
+whippets_w1 = fetchmaker.get_weight("whippet")
+terriers_w1 = fetchmaker.get_weight('terrier')
+pitbulls_w1 = fetchmaker.get_weight('pitbull')
+
+fstat, pval = f_oneway(whippets_w1, terriers_w1, pitbulls_w1)
+print(pval)
+
+#the pval is < 0.05, it shows significant differences
+#now we can use tukey test, to find which one shows the differences
+value = np.concatenate([whippets_w1, terriers_w1, pitbulls_w1])
+labels = ['whippets_w1'] * len(whippets_w1) + ['terriers_w1'] * len(terriers_w1) + ['pitbulls_w1'] * len(pitbulls_w1)
+
+tukey_results = pairwise_tukeyhsd(value, labels, 0.05)
+print(tukey_results)
+
+#test with chi2 test, for two dog type's color (2 categories)
+poodle_colors = fetchmaker.get_color('poodle')
+shihtzu_colors = fetchmaker.get_color('shihtzu')
+
+color_table = [
+  [np.count_nonzero(poodle_colors == "black"), np.count_nonzero(shihtzu_colors == "black")],
+  [np.count_nonzero(poodle_colors == "brown"), np.count_nonzero(shihtzu_colors == "brown")],
+  [np.count_nonzero(poodle_colors == "gold"), np.count_nonzero(shihtzu_colors == "gold")],
+  [np.count_nonzero(poodle_colors == "grey"), np.count_nonzero(shihtzu_colors == "grey")],
+  [np.count_nonzero(poodle_colors == "white"), np.count_nonzero(shihtzu_colors == "white")]
+]
+  
+chi2, pval, dof, expected = chi2_contingency(color_table)
+print(pval)
